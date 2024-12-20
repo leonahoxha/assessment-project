@@ -1,0 +1,66 @@
+First and Last Name: 
+Matriculation Nr.:
+
+Section A: Short Answer Questions
+Q1: Big Data refers to extremely large datasets that are too complex and voluminous for traditional data processing tools to handle. These datasets are often characterized by the three Vs: Volume (the vast amount of data), Velocity (the speed at which the data is generated and processed), and Variety (the diverse types of data, including structured, semi-structured, and unstructured data). Traditional data, on the other hand, typically refers to smaller, structured datasets that can be processed and analyzed using conventional relational databases and tools.
+Q2: Categorical Data: Data with distinct categories (e.g., gender).
+Ordinal Data: Ordered data without fixed intervals (e.g., rankings).
+Numerical Data: Quantitative data, subdivided into discrete (counts) and continuous (measurements).
+Q3: Definition: A field combining automated analysis techniques with interactive visualizations to explore large datasets.
+Role: Enhances understanding by enabling dynamic interaction with data and highlighting patterns and trends.
+Q4: Supervised Learning: Requires labeled data; used for prediction (e.g., classification, regression).
+Unsupervised Learning: Works on unlabeled data; used for pattern detection (e.g., clustering, dimensionality reduction).
+Q5: Definition: An unsupervised learning technique grouping similar data points into clusters.
+Example: Market segmentation to group customers based on purchasing behavior.
+Q6: Scatterplot Matrix: Displays pairwise relationships between variables.
+Parallel Coordinates Plot: Represents each data point as a line crossing axes for each variable.
+Q7: Identifies anomalies or unusual patterns that deviate significantly from the dataset. Useful in fraud detection, quality control, and predictive modeling.
+Q8: Sentiment analysis on customer reviews to gauge satisfaction and improve products.
+Q9: Relationships help uncover patterns, dependencies, and correlations, leading to informed decision-making.
+Q10: Ensures reliability and applicability, helping avoid overfitting or underfitting. Simpler methods may perform comparably to complex ones.
+
+Section B: Problem-Solving and Application
+Q1: Age: Numerical (continuous).
+Income: Numerical (continuous).
+Gender: Categorical.
+Product Rating: Ordinal (ordered, but intervals may not be equal).
+Purchase Date: Temporal (timestamp).
+
+Q2:Use Case: Helps identify customer groups with similar behaviors (e.g., frequent buyers, bargain hunters).
+Steps:
+Data collection and preprocessing.
+Feature selection/engineering.
+Apply clustering algorithms (e.g., k-means, hierarchical clustering).
+Validate clusters using silhouette scores or other metrics.
+Interpret clusters and apply results (e.g., targeted marketing).
+
+Q3: Method: Sentiment analysis.
+Steps:
+Preprocess text (tokenization, stopword removal, stemming).
+Convert text to numerical form using TF-IDF or word embeddings.
+Apply a supervised learning algorithm (e.g., Naïve Bayes, SVM).
+Evaluate model accuracy and refine as needed.
+Use the model to classify customer sentiment (positive, neutral, negative).
+
+Q4: Precision:
+Precision=True PositivesTrue Positives+False Positives=5050+20=0.714\text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} = \frac{50}{50 + 20} = 0.714Precision=True Positives+False PositivesTrue Positives=50+2050=0.714
+Recall:
+Recall=True PositivesTrue Positives+False Negatives=5050+10=0.833\text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} = \frac{50}{50 + 10} = 0.833Recall=True Positives+False NegativesTrue Positives=50+1050=0.833
+Accuracy:
+Accuracy=True Positives+True NegativesTotal Samples=50+70150=0.8\text{Accuracy} = \frac{\text{True Positives} + \text{True Negatives}}{\text{Total Samples}} = \frac{50 + 70}{150} = 0.8Accuracy=Total SamplesTrue Positives+True Negatives=15050+70=0.8
+Interpretation: The model has good recall (identifies spam well), moderate precision (some false positives), and overall decent accuracy.
+
+Section C: Essay Question
+Essay 1: Role in Analytics: Facilitates understanding of complex data by converting it into graphical forms.
+Examples:
+Bar charts for categorical comparisons.
+Heatmaps for correlation analysis.
+Geographic maps for spatial data insights.
+Impact: Enables quick decision-making and effective communication of results.
+
+Essay 2: Challenges: Irregular intervals, seasonality, and trends.
+Methods:
+Time series decomposition.
+Forecasting techniques (e.g., ARIMA, exponential smoothing).
+Visualization (line charts, seasonal plots).
+Applications: Stock price prediction, weather forecasting, and monitoring sales over time.

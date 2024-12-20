@@ -133,3 +133,43 @@ Essay 1: dfserewwefwerfcwRFFSDADKJASJKDHALKSJHKJERHWLEKHFWKLEH KSJF KLDHKSHFLKSD
 Essay 2: 
 ========================================
 
+========================================
+Submission Time: 2024-12-20 13:36:23
+First and Last Name: Teuta Kicmari
+Matriculation Nr.: 445566
+
+Section A: Short Answer Questions
+Q1: o	Big Data: Refers to datasets that are so large, complex, or fast-moving that traditional data processing software cannot handle them efficiently. o	Differences: Big Data is characterized by the 3Vs: Volume (size), Velocity (speed of generation), and Variety (diverse types). Traditional data is smaller, more structured, and can be processed using conventional tools.
+Q2: 
+Q3: o	Definition: A field combining automated analysis techniques with interactive visualizations to explore large datasets. o	Role: Enhances understanding by enabling dynamic interaction with data and highlighting patterns and trends..
+Q4: 
+Q5: 
+Q6: o	Scatterplot Matrix: Displays pairwise relationships between variables. o	Parallel Coordinates Plot: Represents each data point as a line crossing axes for each variable.
+Q7: o	Identifies anomalies or unusual patterns that deviate significantly from the dataset. Useful in fraud detection, quality control, and predictive modeling.
+Q8: o	Sentiment analysis on customer reviews to gauge satisfaction and improve products.
+Q9: 
+Q10:  	Ensures reliability and applicability, helping avoid overfitting or underfitting. Simpler methods may perform comparably to complex ones.
+
+Section B: Problem-Solving and Application
+Q1: o	Age: Numerical (continuous).
+o	Income: Numerical (continuous).
+o	Gender: Categorical.
+o	Product Rating: Ordinal (ordered, but intervals may not be equal).
+o	Purchase Date: Temporal (timestamp).
+
+Q2: 
+Q3: 
+Q4: o	Precision:
+Precision=True PositivesTrue Positives+False Positives=5050+20=0.714\text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} = \frac{50}{50 + 20} = 0.714Precision=True Positives+False PositivesTrue Positives=50+2050=0.714
+o	Recall:
+Recall=True PositivesTrue Positives+False Negatives=5050+10=0.833\text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} = \frac{50}{50 + 10} = 0.833Recall=True Positives+False NegativesTrue Positives=50+1050=0.833
+o	Accuracy:
+Accuracy=True Positives+True NegativesTotal Samples=50+70150=0.8\text{Accuracy} = \frac{\text{True Positives} + \text{True Negatives}}{\text{Total Samples}} = \frac{50 + 70}{150} = 0.8Accuracy=Total SamplesTrue Positives+True Negatives=15050+70=0.8
+o	Interpretation: The model has good recall (identifies spam well), moderate precision (some false positives), and overall decent accuracy.
+
+
+Section C: Essay Question
+Essay 1: 
+========================================
+
+
