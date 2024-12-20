@@ -1,0 +1,84 @@
+import pandas as pd
+import spacy
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+# Load the pre-trained spaCy model for English
+nlp = spacy.load('en_core_web_md')
+
+# Load the student answers CSV file
+students_df = pd.read_csv('exam_answers.csv')
+
+# Load the solution CSV file
+solution_df = pd.read_csv('exam_solution.csv')
+
+# Function to calculate similarity between student and solution answers
+def calculate_similarity(student_answer, solution_answer):
+    # Process both answers using spaCy to get their vector representations
+    student_doc = nlp(student_answer)
+    solution_doc = nlp(solution_answer)
+    
+    # Calculate cosine similarity between the student answer and solution
+    similarity = cosine_similarity([student_doc.vector], [solution_doc.vector])[0][0]
+    return similarity
+
+# Function to grade based on similarity threshold
+def grade_exam(student_answers, solution_answers, threshold=0.8):
+    score = 0
+    # Compare answers section by section
+    for section in ['Section A Answers', 'Section B Answers', 'Section C Answers']:
+        student_answer = student_answers[section]
+        solution_answer = solution_answers[section]
+
+        # Split answers by commas if there are multiple answers in a section
+        student_answer_list = eval(student_answer)  # Convert string list to actual list
+        solution_answer_list = eval(solution_answer)  # Convert string list to actual list
+
+        # Compare each answer in the section
+        for s_ans, sol_ans in zip(student_answer_list, solution_answer_list):
+            # Calculate similarity between student answer and solution answer
+            similarity = calculate_similarity(s_ans.strip(), sol_ans.strip())
+            
+            # If similarity is above the threshold, consider it a correct answer
+            if similarity >= threshold:
+                score += 1  # Increment score for a correct answer
+    return score
+
+# Initialize a list to store the results
+results = []
+
+# Loop through each student and grade their answers
+for idx, student in students_df.iterrows():
+    matriculation_number = student['Matriculation Number']
+    first_last_name = student['First and Last Name']
+    submission_time = student['Submission Time']
+    
+    # Get the answers for the student
+    student_answers = student[['Section A Answers', 'Section B Answers', 'Section C Answers']]
+    
+    # Get the corresponding solution answers
+    solution_answers = solution_df.iloc[0][['Section A Answers', 'Section B Answers', 'Section C Answers']]
+    
+    # Grade the student's answers
+    score = grade_exam(student_answers, solution_answers)
+    
+    # Calculate the percentage (assuming a total of 10 points for the exam)
+    total_score = 10  # Adjust this based on the actual total score of the exam
+    percentage = (score / total_score) * 100
+    
+    # Store the result with percentage
+    results.append({
+        'Matriculation Number': matriculation_number,
+        'Name': first_last_name,
+        'Submission Time': submission_time,
+        'Score': score,
+        'Percentage': percentage
+    })
+
+# Convert results to DataFrame
+results_df = pd.DataFrame(results)
+
+# Save the results to a new CSV file
+results_df.to_csv('graded_results_with_nlp.csv', index=False)
+
+print("Grading complete. Results saved to 'graded_results_with_nlp.csv'.")
