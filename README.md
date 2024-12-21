@@ -1,27 +1,54 @@
-# Data Analytics Exam Streamlit App
+# Exam Grading System
+
+This repository contains an **Exam Grading System** built with two primary components:
+
+1. **Streamlit App** - A web interface for students to take the exam.
+2. **Grading Python Script** - A Python script to grade the students' answers based on pre-defined solutions.
+
+## Table of Contents
+- [Overview](#overview)
+- [Streamlit App](#streamlit-app)
+- [Grading Python Script](#grading-python-script)
+- [Running the Application](#running-the-application)
+- [License](#license)
 
 ## Overview
 
-This Streamlit app is designed to simulate an online exam for data analytics students. It allows candidates to enter their information, such as their name and matriculation number, and then proceed to answer multiple-choice and open-ended questions. The responses are stored in a single text file for evaluation purposes.
+This system allows students to take an exam through a Streamlit-based web application. After submitting their answers, the `grading.py` script automatically grades the students' responses based on pre-defined correct solutions. The grading includes both multiple-choice questions and open-ended questions, where open-ended answers are graded using text similarity metrics.
 
-## Features
+## Streamlit App
 
-- **Candidate Information Page:** 
-  - Collects the candidate’s first and last name and matriculation number.
-  - Checks if the matriculation number is valid from a predefined list.
-  
-- **Exam Questions Page:**
-  - Once valid candidate information is entered, the user is redirected to the exam questions page.
-  - The exam consists of multiple sections:
-    - **Section A:** Short answer questions (10 questions, 4 marks each)
-    - **Section B:** Problem-solving and application (4 questions, 10 marks each)
-    - **Section C:** Essay question (choose one of two topics, 20 marks)
-  
-- **Submit Exam:**
-  - The candidate can submit the exam answers after completing all sections.
-  - All answers, along with candidate information, are saved in a single file (`exam_answers.txt`), which can be reviewed later.
+The Streamlit app serves as the user interface for the exam. Below are the steps involved in using the app:
 
-## Installation
+### Features:
+- **Student Validation**: The student inputs their matriculation number and name. The app checks if these details match the allowed students list.
+- **Student Information**: After validation, students provide their name and matriculation number to start the exam.
+- **Exam Questions**: The exam includes multiple-choice questions, true/false questions, and open-ended questions.
+- **Answer Submission**: Students can submit their answers, which are stored in the `exam_answers.csv` file for grading.
+
+### How It Works:
+1. The app first verifies the student’s identity by checking their matriculation number and name against the allowed list.
+2. Once validated, students fill out the exam form, answering multiple-choice and open-ended questions.
+3. After completing the exam, students can submit their answers, which will be stored in a CSV file for later grading.
+
+## Grading Python Script
+
+The `grading.py` script processes the answers provided by the students and calculates their scores based on both multiple-choice and open-ended questions. 
+
+### Features:
+- **Load Exam Data**: The script loads the correct answers from the `exam_solution.csv` file and student submissions from `exam_answers.csv`.
+- **Multiple-Choice Grading**: For multiple-choice questions, the script compares the student's answers with the correct answers and assigns points for correct responses.
+- **Open-Ended Grading**: For open-ended questions, the script calculates a similarity score using the **TF-IDF Vectorizer** and **Cosine Similarity**. Full points are given for high similarity, and partial points are awarded for moderate similarity.
+- **Final Scores and Grades**: The script calculates the total score, percentage, and assigns a numerical grade based on the percentage.
+- **Output**: The final results (score, percentage, numerical grade) are saved to `exam_grade_results.csv`.
+
+### How It Works:
+1. The script reads the exam answers and the correct answers.
+2. It calculates the score for each student based on their answers.
+3. The numerical grade is assigned using a scale based on the student's percentage.
+4. The results are saved to a CSV file for review.
+
+## Running the Application
 
 To run this app on your local machine, follow these steps:
 
@@ -47,27 +74,6 @@ To run this app on your local machine, follow these steps:
    streamlit run streamlit_app.py
 
 4. Open the app in your browser by navigating to the provided URL (usually http://localhost:8501).
-
-## Usage
-
-### Start the App:
-- Upon launching, candidates are prompted to enter their first and last name and matriculation number.
-
-### Proceed to Exam:
-- After entering the candidate’s information, the user clicks on the **"Proceed to Exam"** button to access the exam questions.
-
-### Answer the Questions:
-- The candidate answers the questions in three sections:
-  - **Section A:** Short Answer
-  - **Section B:** Problem-Solving and Application
-  - **Section C:** Essay
-
-### Submit the Exam:
-- After completing the exam, candidates can submit their answers. The responses are saved to a text file called `exam_answers.txt`.
-
-## File Structure
-- `streamlit_app.py`: The main Streamlit app file where the logic of the app is implemented.
-- `exam_answers.txt`: The text file where all exam responses are stored.
 
 ## Contributions
 Feel free to contribute to this project by forking the repository and submitting pull requests. If you encounter any issues or bugs, please open an issue on the repository.
