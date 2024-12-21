@@ -110,8 +110,8 @@ def assign_numerical_grade(percentage):
 # Apply the numerical grade assignment
 answers['Numerical Grade'] = answers['Percentage'].apply(assign_numerical_grade)
 
-# Output the scores, percentages, and grades
-print(answers[['Name', 'Matriculation Number', 'Score', 'Percentage', 'Numerical Grade']])
+# Output the scores, percentages, grades, and submission time
+print(answers[['Name', 'Matriculation Number', 'Submission Time', 'Score', 'Percentage', 'Numerical Grade']])
 
-# Optionally, save the results to a new CSV
-answers[['Name', 'Matriculation Number', 'Score', 'Percentage', 'Numerical Grade']].to_csv('exam_grade_results.csv', index=False)
+# Save the results to a new CSV including the Submission Time column
+answers[['Name', 'Matriculation Number', 'Submission Time', 'Score', 'Percentage', 'Numerical Grade']].to_csv('exam_grade_results.csv', index=False)
