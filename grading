@@ -1,84 +1,117 @@
 import pandas as pd
-import spacy
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
 
-# Load the pre-trained spaCy model for English
-nlp = spacy.load('en_core_web_md')
+# Load the CSV files
+solution_file = 'exam_solution.csv'
+answers_file = 'exam_answers.csv'
 
-# Load the student answers CSV file
-students_df = pd.read_csv('exam_answers.csv')
+solutions = pd.read_csv(solution_file)
+answers = pd.read_csv(answers_file)
 
-# Load the solution CSV file
-solution_df = pd.read_csv('exam_solution.csv')
+# Ensure both files have the same structure
+assert list(solutions.columns) == list(answers.columns), "Column mismatch between solution and answers files."
 
-# Function to calculate similarity between student and solution answers
-def calculate_similarity(student_answer, solution_answer):
-    # Process both answers using spaCy to get their vector representations
-    student_doc = nlp(student_answer)
-    solution_doc = nlp(solution_answer)
+# Initialize a score column for each student
+answers['Score'] = 0
+
+# Open-ended questions
+open_ended_questions = [
+    "What is the primary goal of data analytics?",
+    "Define 'Big Data' in your own words.",
+    "Explain the importance of visual encoding in data analytics.",
+    "What is the bias-variance trade-off?",
+    "List the steps involved in EDA.",
+    "What are the key components of the data science cycle?",
+    "Explain the concept of predictive modeling.",
+    "What is the purpose of data transformation in analytics?",
+    "Describe the process of text analytics.",
+    "What are some challenges faced in data analytics?"
+]
+
+# Identify multiple-choice questions
+# Assuming MCQs are columns that are not part of the open-ended questions
+mcq_columns = [col for col in solutions.columns if col not in open_ended_questions + ['Name', 'Matriculation Number', 'Submission Time']]
+
+# Ensure the solution has answers to all open-ended questions in the same order
+correct_answers = [solutions.at[0, question] for question in open_ended_questions]
+
+# Initialize TF-IDF Vectorizer for open-ended questions
+vectorizer = TfidfVectorizer(stop_words='english')
+
+# Function to calculate similarity score for open-ended questions
+def calculate_similarity(student_answer, correct_answer):
+    # Vectorize both answers
+    tfidf_matrix = vectorizer.fit_transform([student_answer, correct_answer])
     
-    # Calculate cosine similarity between the student answer and solution
-    similarity = cosine_similarity([student_doc.vector], [solution_doc.vector])[0][0]
-    return similarity
+    # Compute cosine similarity between the student and correct answers
+    similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])
+    return similarity[0][0]  # return the similarity score
 
-# Function to grade based on similarity threshold
-def grade_exam(student_answers, solution_answers, threshold=0.8):
+# Iterate over each student and compute their score
+for index, student in answers.iterrows():
     score = 0
-    # Compare answers section by section
-    for section in ['Section A Answers', 'Section B Answers', 'Section C Answers']:
-        student_answer = student_answers[section]
-        solution_answer = solution_answers[section]
-
-        # Split answers by commas if there are multiple answers in a section
-        student_answer_list = eval(student_answer)  # Convert string list to actual list
-        solution_answer_list = eval(solution_answer)  # Convert string list to actual list
-
-        # Compare each answer in the section
-        for s_ans, sol_ans in zip(student_answer_list, solution_answer_list):
-            # Calculate similarity between student answer and solution answer
-            similarity = calculate_similarity(s_ans.strip(), sol_ans.strip())
-            
-            # If similarity is above the threshold, consider it a correct answer
-            if similarity >= threshold:
-                score += 1  # Increment score for a correct answer
-    return score
-
-# Initialize a list to store the results
-results = []
-
-# Loop through each student and grade their answers
-for idx, student in students_df.iterrows():
-    matriculation_number = student['Matriculation Number']
-    first_last_name = student['First and Last Name']
-    submission_time = student['Submission Time']
     
-    # Get the answers for the student
-    student_answers = student[['Section A Answers', 'Section B Answers', 'Section C Answers']]
-    
-    # Get the corresponding solution answers
-    solution_answers = solution_df.iloc[0][['Section A Answers', 'Section B Answers', 'Section C Answers']]
-    
-    # Grade the student's answers
-    score = grade_exam(student_answers, solution_answers)
-    
-    # Calculate the percentage (assuming a total of 10 points for the exam)
-    total_score = 10  # Adjust this based on the actual total score of the exam
-    percentage = (score / total_score) * 100
-    
-    # Store the result with percentage
-    results.append({
-        'Matriculation Number': matriculation_number,
-        'Name': first_last_name,
-        'Submission Time': submission_time,
-        'Score': score,
-        'Percentage': percentage
-    })
+    # Grading for Multiple Choice Questions
+    for question in mcq_columns:
+        if student[question] == solutions.at[0, question]:  # Correct answer for MCQ
+            score += 1  # 1 point for correct answer
 
-# Convert results to DataFrame
-results_df = pd.DataFrame(results)
+    # Grading for Open-ended Questions
+    for i, question in enumerate(open_ended_questions):
+        student_answer = str(student[question])
+        correct_answer = correct_answers[i]
+        
+        # Calculate similarity for open-ended questions
+        similarity_score = calculate_similarity(student_answer, correct_answer)
+        
+        # Assign points based on similarity score
+        if similarity_score > 0.6:  # If similarity is high, give full points
+            score += 1
+        elif similarity_score > 0.3:  # Partial points for lower similarity
+            score += 0.5
+    
+    # Assign the final score to the student
+    answers.at[index, 'Score'] = score
 
-# Save the results to a new CSV file
-results_df.to_csv('graded_results_with_nlp.csv', index=False)
+# Calculate the percentage of total score
+max_score = 23  # Assuming the total number of questions is 23 (10 open-ended + 13 MCQs)
+answers['Percentage'] = (answers['Score'] / max_score) * 100
 
-print("Grading complete. Results saved to 'graded_results_with_nlp.csv'.")
+# Function to assign numerical grade based on percentage
+def assign_numerical_grade(percentage):
+    if percentage >= 95:
+        return 1.00
+    elif percentage >= 90:
+        return 1.33
+    elif percentage >= 85:
+        return 1.67
+    elif percentage >= 80:
+        return 2.00
+    elif percentage >= 75:
+        return 2.33
+    elif percentage >= 70:
+        return 2.67
+    elif percentage >= 65:
+        return 3.00
+    elif percentage >= 60:
+        return 3.33
+    elif percentage >= 55:
+        return 3.67
+    elif percentage >= 50:
+        return 4.00
+    elif percentage >= 45:
+        return 4.33
+    elif percentage >= 40:
+        return 4.67  # fail
+    else:
+        return 5.00  # fail
+
+# Apply the numerical grade assignment
+answers['Numerical Grade'] = answers['Percentage'].apply(assign_numerical_grade)
+
+# Output the scores, percentages, and grades
+print(answers[['Name', 'Matriculation Number', 'Score', 'Percentage', 'Numerical Grade']])
+
+# Optionally, save the results to a new CSV
+answers[['Name', 'Matriculation Number', 'Score', 'Percentage', 'Numerical Grade']].to_csv('exam_grade_results.csv', index=False)

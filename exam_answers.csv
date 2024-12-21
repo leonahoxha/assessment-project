@@ -1,3 +1,35 @@
-Matriculation Number,First and Last Name,Submission Time,Section A Answers,Section B Answers,Section C Answers
-123456,leoannn,20/12/2024 19:27,"['fsadfadfasdf', '', '', '', '']","['asdfsdfsda', '', 'adfasdfasdf', '']","['', 'sdfasdfadsf']"
-123456,Ana,20/12/2024 19:29,"['Big Data refers to extremely large datasets that are too complex and voluminous to be processed and analyzed using traditional data management tools. Unlike traditional data, which can be easily handled with conventional software,. I.',  '', '', '', 'Clustering is a technique in unsupervised learning used to group similar data points together. For example, in customer segmentation, clustering can help categorize customers into groups based on similar purchasing behaviors or demographics, enabling targeted marketing strategies.']","['In the Taxonomy of Data Types problem, Age is numerical (continuous), and Purchase Date is time-series data.', 'The steps include data collection, pre-processing (such as normalization), choosing the clustering algorithm (like K-means), fitting the model, and interpreting the results to form actionable insights.', 'to each review. The steps involve collecting data, preprocessing text (removing stopwords, tokenization), applying sentiment analysis algorithms (such as Naive Bayes or LSTM), and aggregating the results to determine overall customer sentiment.', '']","['In the Importance of Data Visualization essay, one could discuss how visualizations like bar charts, heatmaps, and line graphs make complex data more digestible, helping users identify trends and patterns quickly. Visualizations support analytical reasoning by simplifying data interpretation, aiding in faster decision-making.', '']"
+Name,Matriculation Number,Submission Time,What is the primary goal of data analytics?,True or False: Data visualization is not a part of data analytics.,Which of the following is a method for analyzing text data?,Define 'Big Data' in your own words.,Which of the following is not a data type discussed in the course?,Explain the importance of visual encoding in data analytics.,Which R command is used for logistic regression?,Describe a real-world application of clustering.,True or False: Supervised learning requires labeled data.,What is the bias-variance trade-off?,Which of the following is a statistical learning method?,List the steps involved in EDA.,True or False: EDA is a one-time process.,What are the key components of the data science cycle?,Which of the following is not part of the data science cycle?,Explain the concept of predictive modeling.,True or False: Predictive modeling can be used for forecasting future events.,What is the purpose of data transformation in analytics?,Which of the following is a data aggregation technique?,Describe the process of text analytics.,True or False: Document analytics is only applicable to digital documents.,What are some challenges faced in data analytics?,Which of the following is an advanced data analytics technique?
+Leona Hasani,234567,20/12/2024 23:10,"The primary goal of data analytics is to extract meaningful insights and patterns from raw data,",,C) Text Analytics,,C) Quantum Data,,,"Clustering is used in customer segmentation, where businesses group customers into different segments based on purchasing behavior or preferences. This allows businesses to target specific customer groups with tailored marketing strategies, improving customer engagement and sales.",,"The bias-variance trade-off refers to the balance between two sources of error in a model: bias (error due to overly simplistic models) and variance (error due to overly complex models). A model with high bias may underfit the data, while one with high variance may overfit the data. ",,"1.	Data collection and loading
+2.	Data cleaning and preprocessing
+3.	Visualizing data (using histograms, scatter plots, etc.)
+4.	Identifying patterns and outliers
+5.	Summarizing data (using descriptive statistics)
+6.	Drawing preliminary conclusions based on the analysis
+",,,C) Data Ignoring,,TRUE,"The purpose of data transformation is to convert raw data into a format suitable for analysis. This may involve scaling, normalizing, encoding categorical variables, handling missing values, or aggregating data to make it more useful for modeling and interpretation.",,"Text analytics involves processing and analyzing textual data to extract meaningful information. It often includes steps like tokenization, sentiment analysis, topic modeling, and named entity recognition (NER) to uncover patterns and insights from text-based data sources.",FALSE,"1.	Data quality issues (missing or inconsistent data)
+2.	High volume and complexity of data
+3.	Privacy and security concerns
+4.	Difficulty in interpreting complex models
+5.	Lack of skilled professionals
+6.	Data integration from multiple sources
+",B) Neural Networks
+Nanmanat Disayakamonpan,345678,20/12/2024 23:12,"  decision-making, improve processes, and drive business plans.",,C) Text Analytics,"Big Data refers to extremely large and complex data sets that are difficult to process and analyze using traditional data processing tools. It is characterized by the 3Vs: volume, variety, and velocity, and it requires specialized technologies to handle and extract useful insights from it.",C) Quantum Data,"Visual encoding refers to the use of graphical elements (such as color, size, shape, and position) to represent data in a visual format. It is important because it enables analysts to convey complex data patterns and relationships in an easily interpretable and accessible manner, aiding in better understanding and communication of insights.",B) glm,"Clustering is used in customer segmentation, where businesses group customers into different segments based on purchasing behavior or preferences. This allows businesses to target specific customer groups with tailored marketing strategies, improving customer engagement and sales.",TRUE,"The bias-variance trade-off refers to the balance between two sources of error in a model: bias (error due to overly simplistic models) and variance (error due to overly complex models). A model with high bias may underfit the data, while one with high variance may overfit the data. The goal is to find a model that minimizes both bias and variance to achieve optimal performance.",C) Both A and B,"1.	Data collection and loading
+2.	Data cleaning and preprocessing
+3.	Visualizing data (using histograms, scatter plots, etc.)
+4.	Identifying patterns and outliers
+5.	Summarizing data (using descriptive statistics)
+6.	Drawing preliminary conclusions based on the analysis
+",FALSE,"1.	Data Collection
+2.	Data Cleaning
+3.	Data Exploration (EDA)
+4.	Data Modeling
+5.	Model Evaluation
+6.	Model Deployment
+7.	Monitoring and Maintenance
+",,,TRUE,,A) Summarization,"Text analytics involves processing and analyzing textual data to extract meaningful information. It often includes steps like tokenization, sentiment analysis, topic modeling, and named entity recognition (NER) to uncover patterns and insights from text-based data sources.",FALSE,"1.	Data quality issues (missing or inconsistent data)
+2.	High volume and complexity of data
+3.	Privacy and security concerns
+4.	Difficulty in interpreting complex models
+5.	Lack of skilled professionals
+6.	Data integration from multiple sources
+",B) Neural Networks
+Leona Hoxha,123456,20/12/2024 23:05,,,,,,,,,,,,,,,C) Data Ignoring,,,,,,FALSE,,B) Neural Networks

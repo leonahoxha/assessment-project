@@ -2,128 +2,136 @@ import streamlit as st
 from datetime import datetime
 import csv
 
-# Allowed Matriculation Numbers
-allowed_matriculation_numbers = ["123456", "654321", "112233", "445566"]
+# Allowed Matriculation Numbers with corresponding names (case-insensitive comparison)
+allowed_matriculation_numbers = {
+    "123456": "Leona Hoxha",
+    "234567": "Leona Hasani",
+    "345678": "Nanmanat Disayakamonpan"
+}
 
 # Title
 st.title("Data Analytics Exam")
 st.write("Duration: 2 hours | Total Marks: 100")
 
-# Initialize session state variables for matriculation number and name
-if 'valid_matriculation' not in st.session_state:
+# Initialize session state variables
+if "valid_matriculation" not in st.session_state:
     st.session_state.valid_matriculation = False
-if 'first_last_name' not in st.session_state:
-    st.session_state.first_last_name = ""
-if 'matriculation_nr' not in st.session_state:
-    st.session_state.matriculation_nr = ""
-if 'page' not in st.session_state:
-    st.session_state.page = "Candidate Information"  # Default page is Candidate Information
+if "page" not in st.session_state:
+    st.session_state.page = "Student Information"
+if "answers" not in st.session_state:
+    st.session_state.answers = {}
 
-# Create navigation for pages
-if st.session_state.page == "Candidate Information":
-    st.radio("Navigate", ["Candidate Information", "Exam Questions"], index=0, key="navigation", disabled=True)
-elif st.session_state.page == "Exam Questions":
-    st.radio("Navigate", ["Candidate Information", "Exam Questions"], index=1, key="navigation", disabled=True)
-
-# Candidate Information Page
-if st.session_state.page == "Candidate Information":
-    st.write("### Candidate Information")
-    
-    # Get Candidate Information
+# Student Information Page
+if st.session_state.page == "Student Information":
+    st.write("### Student Information")
     first_last_name = st.text_input("First and Last Name:", key="first_last_name_input")
     matriculation_nr = st.text_input("Matriculation Nr.:", key="matriculation_nr_input")
-    
-    # Check Matriculation Number
+
+    # Validation
     if matriculation_nr and matriculation_nr not in allowed_matriculation_numbers:
         st.warning("Invalid Matriculation Number! Please enter a valid matriculation number to proceed.")
-    
-    # Proceed button that updates session state if valid
-    if matriculation_nr in allowed_matriculation_numbers and first_last_name:
-        if st.button("Proceed to Exam (Press Twice)"):
-            # Save to session state and move to the next page (Exam Questions)
-            st.session_state.first_last_name = first_last_name
-            st.session_state.matriculation_nr = matriculation_nr
-            st.session_state.valid_matriculation = True
-            st.session_state.page = "Exam Questions"  # Update the page to Exam Questions
+    elif matriculation_nr and first_last_name.strip().lower() != allowed_matriculation_numbers.get(matriculation_nr, "").lower():
+        st.warning("The name and matriculation number do not match our records.")
+    elif matriculation_nr in allowed_matriculation_numbers and first_last_name.strip().lower() == allowed_matriculation_numbers[matriculation_nr].lower():
+        st.session_state.valid_matriculation = True
+        st.session_state.page = "Exam Questions"
+        st.session_state.first_last_name = first_last_name
+        st.session_state.matriculation_nr = matriculation_nr
+        st.success("Validation successful! Proceeding to the exam.")
 
 # Exam Questions Page
-elif st.session_state.page == "Exam Questions":
-    if not st.session_state.valid_matriculation:
-        st.error("You must provide valid candidate information first!")
-    else:
-        # Section A: Short Answer Questions
-        st.write("### Section A: Short Answer Questions (5 x 8 = 40 Marks)")
-
-        questions_a = [
-            "Define Big Data and explain how it differs from traditional data.",
-            "List and describe the main categories in a taxonomy of data types.",
-            "Explain the concept of Visual Analytics and its role in data exploration.",
-            "What are the key differences between supervised and unsupervised learning?",
-            "Define clustering and provide an example of its application.",
-        ]
-
-        answers_a = []
-        for i, question in enumerate(questions_a, 1):
-            st.write(f"{i}. {question}")
-            answer = st.text_input(f"Answer {i}:")
-            answers_a.append(answer)
+if st.session_state.page == "Exam Questions" and st.session_state.valid_matriculation:
+    # Combine all questions into one session
+    exam_questions = [
+        {"type": "text", "question": "What is the primary goal of data analytics?"},
+        {"type": "true_false", "question": "True or False: Data visualization is not a part of data analytics."},
+        {"type": "multiple_choice", "question": "Which of the following is a method for analyzing text data?", 
+         "options": ["A) Clustering", "B) Regression", "C) Text Analytics", "D) None of the above"]},
         
-        # Section B: Problem-Solving and Application
-        st.write("### Section B: Problem-Solving and Application (4 x 10 = 40 Marks)")
+        {"type": "text", "question": "Define 'Big Data' in your own words."},
+        {"type": "multiple_choice", "question": "Which of the following is not a data type discussed in the course?",
+         "options": ["A) Temporal Data", "B) Geospatial Data", "C) Quantum Data", "D) Multidimensional Data"]},
+        
+        {"type": "text", "question": "Explain the importance of visual encoding in data analytics."},
+        {"type": "multiple_choice", "question": "Which R command is used for logistic regression?",
+         "options": ["A) lm", "B) glm", "C) plot", "D) summary"]},
+        
+        {"type": "text", "question": "Describe a real-world application of clustering."},
+        {"type": "true_false", "question": "True or False: Supervised learning requires labeled data."},
+        
+        {"type": "text", "question": "What is the bias-variance trade-off?"},
+        {"type": "multiple_choice", "question": "Which of the following is a statistical learning method?",
+         "options": ["A) Decision Trees", "B) Neural Networks", "C) Both A and B", "D) None of the above"]},
+        
+        {"type": "text", "question": "List the steps involved in EDA."},
+        {"type": "true_false", "question": "True or False: EDA is a one-time process."},
+        
+        {"type": "text", "question": "What are the key components of the data science cycle?"},
+        {"type": "multiple_choice", "question": "Which of the following is not part of the data science cycle?",
+         "options": ["A) Data Collection", "B) Data Cleaning", "C) Data Ignoring", "D) Data Analysis"]},
+        
+        {"type": "text", "question": "Explain the concept of predictive modeling."},
+        {"type": "true_false", "question": "True or False: Predictive modeling can be used for forecasting future events."},
+        
+        {"type": "text", "question": "What is the purpose of data transformation in analytics?"},
+        {"type": "multiple_choice", "question": "Which of the following is a data aggregation technique?",
+         "options": ["A) Summarization", "B) Visualization", "C) Encoding", "D) None of the above"]},
+        
+        {"type": "text", "question": "Describe the process of text analytics."},
+        {"type": "true_false", "question": "True or False: Document analytics is only applicable to digital documents."},
+        
+        {"type": "text", "question": "What are some challenges faced in data analytics?"},
+        {"type": "multiple_choice", "question": "Which of the following is an advanced data analytics technique?",
+         "options": ["A) Simple Regression", "B) Neural Networks", "C) Basic Clustering", "D) None of the above"]},
+    ]
 
-        questions_b = [
-            "Taxonomy of Data Types: A dataset contains the following attributes: Age (years), Income (USD), Gender (Male/Female), Product Rating (1-5 stars), Purchase Date (timestamp). Classify each attribute into an appropriate data type (e.g., categorical, ordinal, etc.) and justify your classification.",
-            "Clustering Application: You are working on customer segmentation for an e-commerce company. Explain how clustering could help the company and describe the steps you would take to perform the clustering.",
-            "Text Analytics: A dataset contains thousands of customer reviews for a product. Suggest a method for analyzing this data to determine customer sentiment and provide a step-by-step approach.",
-            "Supervised Learning Evaluation: A logistic regression model was trained to classify emails as spam or not spam. The confusion matrix is as follows: Predicted Spam | Predicted Not Spam; Actual Spam | 50 | 10; Actual Not Spam | 20 | 70. Calculate the following metrics and interpret them: Precision, Recall, Accuracy."
-        ]
+    # Display questions and collect answers
+    answers = {}
+    for i, question_data in enumerate(exam_questions, start=1):
+        q_type = question_data["type"]
+        question = question_data["question"]
+        key = f"question_{i}"  # Unique key for each question
 
-        answers_b = []
-        for i, question in enumerate(questions_b, 1):
-            st.write(f"{i}. {question}")
-            answer = st.text_area(f"Answer {i}:")
-            answers_b.append(answer)
+        if q_type == "text":
+            answer = st.text_area(question, key=key, placeholder="Enter your answer here")
+        elif q_type == "true_false":
+            # Using None for the default to prevent pre-selection
+            answer = st.radio(question, ["True", "False"], key=key, index=None)
+        elif q_type == "multiple_choice":
+            # Using None for the default to prevent pre-selection
+            answer = st.radio(question, question_data["options"], key=key, index=None)
+        else:
+            answer = ""
 
-        # Section C: Essay Question
-        st.write("### Section C: Essay Question (20 Marks)")
+        answers[question] = answer
 
-        essay_topics = [
-            "Importance of Data Visualization: Discuss how data visualization aids in analytical reasoning and decision-making. Include examples of different visualization techniques and their applications.",
-            "Temporal Data Analytics: Explain the challenges and methods for analyzing temporal data. Provide examples of real-world applications and discuss how insights derived from temporal data can drive decisions.",
-        ]
+    # Save answers to session state
+    st.session_state.answers["All Questions"] = answers
 
-        answers_c = []
-        for i, topic in enumerate(essay_topics, 1):
-            st.write(f"{i}. {topic}")
-            answer = st.text_area(f"Essay {i}:")
-            answers_c.append(answer)
+    if st.button("Submit Exam"):
+        submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # Prepare the data for a single row per student
+        student_data = {
+            "Name": st.session_state.first_last_name,
+            "Matriculation Number": st.session_state.matriculation_nr,
+            "Submission Time": submission_time
+        }
 
-        # Submit Button and Save to CSV
-        if st.button("Submit Exam"):
-            if st.session_state.matriculation_nr not in allowed_matriculation_numbers:
-                st.error("Your Matriculation Number is not authorized to submit the exam.")
-            else:
-                submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # Add all answers to the student data dictionary
+        for question, answer in answers.items():
+            student_data[question] = answer
 
-                # Prepare data to write to CSV
-                student_data = {
-                    "Matriculation Number": st.session_state.matriculation_nr,
-                    "First and Last Name": st.session_state.first_last_name,
-                    "Submission Time": submission_time,
-                    "Section A Answers": answers_a,
-                    "Section B Answers": answers_b,
-                    "Section C Answers": answers_c,
-                }
+        # Save to CSV (appending to a file)
+        try:
+            with open("exam_answers.csv", "a", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=student_data.keys())
+                
+                # Write header only if file is empty
+                if f.tell() == 0:
+                    writer.writeheader()
 
-                # Append data to the CSV file
-                with open("exam_answers.csv", "a", newline='') as f:
-                    writer = csv.DictWriter(f, fieldnames=["Matriculation Number", "First and Last Name", "Submission Time", "Section A Answers", "Section B Answers", "Section C Answers"])
-                    
-                    # Write header only if the file is empty
-                    if f.tell() == 0:
-                        writer.writeheader()
-                    
-                    # Write the student data
-                    writer.writerow(student_data)
-
-                st.success("Your answers have been submitted and saved to the CSV file.")
+                writer.writerow(student_data)
+                
+            st.success("Exam submitted successfully!")
+        except Exception as e:
+            st.error(f"An error occurred while saving your answers: {e}")
